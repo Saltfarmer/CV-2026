@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume - Gama Candra Tri Kartika</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* BASE SETTINGS */
+        :root {
+            --primary-blue: #065AD1;
+            --bright-blue: #2D82FA;
+            --cyan: #61D3E6;
+            --light-gray: #DADADA;
+            --accent-orange: #fd7815;
+            --white: #ffffff;
+            --text-dark: #333333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #555;
+            color: var(--text-dark);
+            /* Reduced font size to ensure fit */
+            font-size: 11px; 
+            line-height: 1.4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Hide scrollbars for web view */
+        }
+
+        /* PRINT BUTTON (Top Right) */
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--accent-orange);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .print-btn:hover {
+            background-color: #e56b10;
+        }
+
+        /* PAGE STRUCTURE (A4) */
+        .page-wrapper {
+            /* This wrapper is scaled by JS */
+            transform-origin: center center; 
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        .page {
+            width: 210mm;
+            height: 297mm; /* Exact A4 */
+            background: white;
+            display: grid;
+            grid-template-columns: 28% 72%; /* Adjusted column ratio for space */
+        }
+
+        /* LEFT COLUMN (SIDEBAR) */
+        .left-col {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 25px 20px; /* Reduced padding */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-container {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .profile-pic {
+            width: 110px; /* Smaller image */
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--white);
+            background-color: var(--bright-blue);
+        }
+
+        .left-col h3 {
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--cyan);
+            padding-bottom: 3px;
+            margin-top: 20px;
+            color: var(--white);
+            font-weight: 700;
+        }
+
+        .left-col h3:first-of-type {
+            margin-top: 0;
+        }
+
+        .left-col ul {
+            list-style: none;
+        }
+
+        .left-col li {
+            margin-bottom: 12px;
+            font-size: 11px;
+            line-height: 1.3;
+        }
+
+        /* Links */
+        .left-col a {
+            color: var(--cyan);
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+        }
+
+        /* RIGHT COLUMN (MAIN CONTENT) */
+        .right-col {
+            padding: 30px; /* Reduced padding */
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        .header {
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 32px; /* Smaller header */
+            font-weight: 800;
+            color: var(--primary-blue);
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .header h2 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--bright-blue);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .summary {
+            font-size: 11px;
+            color: #444;
+            margin-bottom: 20px;
+            text-align: justify;
+            border-left: 3px solid var(--accent-orange);
+            padding-left: 12px;
+            line-height: 1.5;
+        }
+
+        /* SECTION TITLES */
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--light-gray);
+            margin-bottom: 15px;
+            padding-bottom: 3px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--light-gray);
+            margin-left: 10px;
+        }
+
+        /* EXPERIENCE & EDUCATION STYLES */
+        .item-row {
+            margin-bottom: 15px; /* Tighter spacing */
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .item-left-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-box {
+            width: 50px; /* Smaller logo */
+            height: 50px;
+            object-fit: contain;
+            background-color: #fff;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 1px;
+            flex-shrink: 0;
+        }
+
+        .role-title {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--text-dark);
+            display: block;
+            line-height: 1.2;
+        }
+
+        .company-name {
+            font-weight: 600;
+            font-style: italic;
+            color: var(--bright-blue);
+            display: block;
+            font-size: 12px;
+        }
+
+        .date-text {
+            font-size: 11px;
+            color: var(--primary-blue);
+            font-weight: 600;
+            text-align: right;
+            min-width: 100px;
+            padding-top: 2px;
+        }
+
+        .item-bullets {
+            list-style: none;
+            margin-left: 50px; /* Align with text */
+        }
+
+        .item-bullets li {
+            margin-bottom: 3px;
+            position: relative;
+            padding-left: 12px;
+            color: #555;
+            font-size: 11px;
+            line-height: 1.35;
+        }
+
+        .item-bullets li::before {
+            content: "•";
+            color: var(--accent-orange);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .edu-desc {
+            margin-left: 50px;
+            font-size: 11px;
+            font-style: italic;
+            color: #666;
+            margin-top: 2px;
+            line-height: 1.3;
+        }
+
+        /* STRICT A4 PRINT SETTINGS */
+        @page {
+            size: A4;
+            margin: 0; /* Important: removes printer margins */
+        }
+
+        @media print {
+            body {
+                background: white;
+                height: 100%;
+                width: 100%;
+                display: block;
+                overflow: visible;
+            }
+
+            .print-btn {
+                display: none;
+            }
+
+            .page-wrapper {
+                transform: none !important;
+                box-shadow: none;
+                margin: 0;
+                width: 210mm;
+                height: 297mm;
+            }
+
+            .page {
+                width: 210mm;
+                height: 297mm;
+                page-break-after: avoid;
+                page-break-inside: avoid;
+            }
+
+            /* Ensure background colors print */
+            .left-col {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                background-color: var(--primary-blue) !important;
+                height: 100%; 
+            }
+
+            a { text-decoration: none; color: inherit; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="print-btn" onclick="window.print()">DOWNLOAD PDF</button>
+
+    <div class="page-wrapper" id="pageWrapper">
+        <div class="page">
+            <div class="left-col">
+                
+                <div class="profile-container">
+                    <img src="Profile-Picture.png" alt="Profile Picture" class="profile-pic">
+                </div>
+
+                <h3>Contact</h3>
+                <ul>
+                    <li>
+                        <strong>Phone</strong>
+                        <a href="https://wa.me/6289654393995" target="_blank">+62 89 654 393 995</a>
+                    </li>
+                    <li>
+                        <strong>Email</strong>
+                        <a href="mailto:candragctk17@gmail.com">candragctk17@gmail.com</a>
+                    </li>
+                    <li>
+                        <strong>Location</strong><br>
+                        Jakarta, Indonesia
+                    </li>
+                    <li>
+                        <strong>Portfolio</strong>
+                        <a href="https://saltfarmer.github.io" target="_blank">saltfarmer.github.io</a>
+                    </li>
+                    <li>
+                        <strong>LinkedIn</strong>
+                        <a href="https://www.linkedin.com/in/gama-candra-tri-kartika-18b735106/" target="_blank">linkedin.com/in/gama-candra</a>
+                    </li>
+                </ul>
+
+                <h3>Skills</h3>
+                <p style="margin-bottom:10px; font-size:11px; color:#f0f0f0;">
+                    <strong>Programming:</strong><br>
+                    Python, SQL (MySQL, PostgreSQL), R
+                </p>
+                <p style="margin-bottom:10px; font-size:11px; color:#f0f0f0;">
+                    <strong>Data Viz:</strong><br>
+                    PowerBI, Apache Superset, Tableau, Plotly
+                </p>
+                <p style="margin-bottom:10px; font-size:11px; color:#f0f0f0;">
+                    <strong>Tools & Cloud:</strong><br>
+                    Microsoft Azure, Streamlit, Pandas, Scikit-Learn, PySpark
+                </p>
+                <p style="margin-bottom:10px; font-size:11px; color:#f0f0f0;">
+                    <strong>Languages:</strong><br>
+                    English (Professional)<br>Indonesian (Native)<br> Dutch (Basic)
+                </p>
+
+                                <h3>Certifications</h3>
+                <p style="margin-bottom:10px; font-size:11px; color:#f0f0f0;">
+                    <strong>edX : Verified Certificate for Statistical Learning</strong><br>
+
+                </p>
+                <p style="margin-bottom:10px; font-size:11px; color:#f0f0f0;">
+                    <strong>Sololearn : Certificate of Completion: SQL Fundamentals</strong><br>
+                </p>
+            </div>
+
+            
+
+            <div class="right-col">
+                <div class="header">
+                    <h1>Gama Candra<br>Tri Kartika</h1>
+                    <h2>Data Scientist | Data Analyst</h2>
+                </div>
+
+                <div class="summary">
+                    <p>
+                        Data Science professional with an M.Sc. in Applied Data Science from Utrecht University and a B.Sc. in Computer Science from UGM. Currently serving as a Junior Manager at PT Bank Rakyat Indonesia, leveraging expertise in SQL, Python using PySpark, developing data from Hive, and Apache Superset to drive data development and audit operations. Combines international experience in Amsterdam with a strong technical foundation in statistical learning to deliver actionable data-driven solutions.
+                    </p>
+                </div>
+
+                <h3 class="section-title">Professional Experience</h3>
+
+                <div class="item-row">
+                    <div class="item-header">
+                        <div class="item-left-group">
+                            <img src="BRI-Logo.png" alt="BRI Logo" class="logo-box">
+                            <div>
+                                <span class="role-title">Junior Manager, Data Dev & Ops</span>
+                                <span class="company-name">PT Bank Rakyat Indonesia (Persero) Tbk</span>
+                            </div>
+                        </div>
+                        <span class="date-text">Aug 2024 – Present</span>
+                    </div>
+                    <ul class="item-bullets">
+                        <li><strong>Developed</strong> comprehensive visualizations to monitor yearly audit progress, enhancing leadership's ability to track performance.</li>
+                        <li><strong>Engineered</strong> new Key Risk Indicators (KRIs) to proactively identify potential audit issues and mitigate risks.</li>
+                        <li><strong>Streamlined</strong> data provision processes for auditors, ensuring timely access to critical information for field operations.</li>
+                        <li><strong>Built</strong> a custom search engine to facilitate rapid retrieval of audit documentation, significantly improving team efficiency.</li>
+                    </ul>
+                </div>
+
+                <div class="item-row">
+                    <div class="item-header">
+                         <div class="item-left-group">
+                            <img src="BFLP-Logo.png" alt="BFLP Logo" class="logo-box">
+                            <div>
+                                <span class="role-title">BFLP Trainee (Data Science Audit)</span>
+                                <span class="company-name">PT Bank Rakyat Indonesia (Persero) Tbk</span>
+                            </div>
+                        </div>
+                        <span class="date-text">Oct 2023 – Aug 2024</span>
+                    </div>
+                    <ul class="item-bullets">
+                        <li><strong>Gained</strong> deep expertise in banking operations, business processes, and audit methodologies through an intensive leadership development program.</li>
+                        <li><strong>Conducted</strong> a strategic study on Risk Indicators, utilizing PowerBI to model and visualize potential risks for the audit department.</li>
+                    </ul>
+                </div>
+
+                <div class="item-row">
+                    <div class="item-header">
+                        <div class="item-left-group">
+                            <img src="In2Intel-Logo.png" alt="In2Intel Logo" class="logo-box">
+                            <div>
+                                <span class="role-title">Data Science Trainee</span>
+                                <span class="company-name">In2Intel, Amsterdam</span>
+                            </div>
+                        </div>
+                        <span class="date-text">Sep 2022 – Sep 2023</span>
+                    </div>
+                    <ul class="item-bullets">
+                        <li><strong>Designed and deployed</strong> interactive dashboards using PowerBI to visualize complex datasets for client stakeholders.</li>
+                        <li><strong>Implemented</strong> web scraping pipelines to harvest social media data and performed sentiment analysis to derive actionable insights.</li>
+                        <li><strong>Contributed</strong> to a high-tech Digital Twins project utilizing Microsoft Azure, simulating physical systems for predictive analysis.</li>
+                    </ul>
+                </div>
+
+                <h3 class="section-title">Education</h3>
+                
+                <div class="item-row">
+                    <div class="item-header">
+                        <div class="item-left-group">
+                            <img src="Utrecht-Logo.png" alt="Utrecht University Logo" class="logo-box">
+                            <div>
+                                <span class="role-title">M.Sc. Applied Data Science</span>
+                                <span class="company-name">Utrecht University</span>
+                            </div>
+                        </div>
+                        <span class="date-text">2021 - 2022</span>
+                    </div>
+                    <div class="edu-desc">
+                        <strong>Thesis:</strong> Understanding Text Features and Time Importance Of A Machine Learning Model on Plumbers Reviews.
+                    </div>
+                </div>
+
+                <div class="item-row">
+                    <div class="item-header">
+                        <div class="item-left-group">
+                            <img src="UGM-Logo.png" alt="UGM Logo" class="logo-box">
+                            <div>
+                                <span class="role-title">B.Sc. Computer Science</span>
+                                <span class="company-name">Universitas Gadjah Mada</span>
+                            </div>
+                        </div>
+                        <span class="date-text">2015 - 2019</span>
+                    </div>
+                    <div class="edu-desc">
+                        <strong>Thesis:</strong> A Comparative Study of Features Extraction, Features Selection, and Classifier Methods on Sentiment Analysis During Indonesian Election.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // WEB VIEW AUTO-FIT SCRIPT
+        // This calculates the screen size and scales the A4 wrapper down to fit
+        // without scrollbars, keeping the aspect ratio intact.
+        function autoFit() {
+            const wrapper = document.getElementById('pageWrapper');
+            const windowHeight = window.innerHeight;
+            const windowWidth = window.innerWidth;
+            
+            // A4 Dimensions in mm
+            const a4Height = 297;
+            const a4Width = 210;
+            const padding = 40; // Space for margin
+
+            // Approximate conversion to pixels (for reference, but we rely on scale)
+            const wrapperHeightPx = wrapper.offsetHeight;
+            const wrapperWidthPx = wrapper.offsetWidth;
+
+            // Determine scale based on height
+            let scale = (windowHeight - padding) / wrapperHeightPx;
+            
+            // If the width is also too small, scale based on width
+            if (wrapperWidthPx * scale > windowWidth - padding) {
+                scale = (windowWidth - padding) / wrapperWidthPx;
+            }
+
+            // Don't zoom in past 100%
+            if (scale > 1) scale = 1;
+
+            wrapper.style.transform = `scale(${scale})`;
+        }
+
+        window.addEventListener('load', autoFit);
+        window.addEventListener('resize', autoFit);
+    </script>
+</body>
+</html>
